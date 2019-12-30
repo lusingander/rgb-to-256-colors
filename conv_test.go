@@ -20,7 +20,7 @@ func TestFromRGB(t *testing.T) {
 	}
 	for _, c := range existColors {
 		c256 := FromRGB(c.r, c.g, c.b)
-		if c256.r != c.r || c256.g != c.g || c256.b != c.b {
+		if c256.R != c.r || c256.G != c.g || c256.B != c.b {
 			t.Fatalf("from: %v, created: %v", c, c256)
 		}
 	}

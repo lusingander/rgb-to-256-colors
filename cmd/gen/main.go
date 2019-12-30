@@ -24,12 +24,12 @@ func main() {
 func (c *color) generateColor256() string {
 	return fmt.Sprintf(`
 	%d: &Color256{
-		colorID: %d,
-		name: "%s",
-		hex: "%s",
-		r: %d,
-		g: %d,
-		b: %d,
+		ColorID: %d,
+		Name: "%s",
+		HexString: "%s",
+		R: %d,
+		G: %d,
+		B: %d,
 	},`, c.ColorID, c.ColorID, c.Name, c.HexString, c.RGB.R, c.RGB.G, c.RGB.B)
 }
 
