@@ -1,10 +1,21 @@
 package rgbto256colors
 
+import "image/color"
+
 type Color256 struct {
 	colorID uint8
 	name    string
 	hex     string
 	r, g, b uint8
+}
+
+func (c *Color256) ToColor() color.Color {
+	return &color.RGBA{
+		R: c.r,
+		G: c.g,
+		B: c.b,
+		A: 255,
+	}
 }
 
 var colors = map[uint8]*Color256{
