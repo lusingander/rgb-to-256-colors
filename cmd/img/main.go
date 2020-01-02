@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -9,6 +10,10 @@ import (
 	"math/rand"
 	"os"
 	"time"
+
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
 
 	"github.com/lusingander/rgbto256colors-go"
 )
@@ -54,9 +59,27 @@ func paintPattern(i *image.RGBA, r, c int, c1, c2 color.Color) {
 		for x := baseX + cellW; x < baseX+(cellW*2); x++ {
 			i.Set(x, y, c2)
 		}
-		// TODO: draw color code string below the pattern
-		// e.g. "src: #0A1B2C  dst: #AABBCC"
 	}
+	drawColorCodeString(i, baseX, baseY, c1, c2)
+}
+
+func drawColorCodeString(i *image.RGBA, baseX, baseY int, c1, c2 color.Color) {
+	d := &font.Drawer{
+		Dst:  i,
+		Src:  image.NewUniform(color.Black),
+		Face: basicfont.Face7x13,
+	}
+	d.Dot.X = (fixed.I(baseX))
+	d.Dot.Y = fixed.I(baseY + cellH + d.Face.Metrics().Height.Floor())
+	d.DrawString(hexColorString(c1))
+	d.Dot.X = (fixed.I(baseX + cellW))
+	d.Dot.Y = fixed.I(baseY + cellH + d.Face.Metrics().Height.Floor())
+	d.DrawString(hexColorString(c2))
+}
+
+func hexColorString(c color.Color) string {
+	rgba := color.RGBAModel.Convert(c).(color.RGBA)
+	return fmt.Sprintf("#%.2X%.2X%.2X", rgba.R, rgba.G, rgba.B)
 }
 
 func uint8RandGen() func() uint8 {
